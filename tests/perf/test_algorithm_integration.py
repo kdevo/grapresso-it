@@ -1,7 +1,7 @@
 import pytest
 
 from grapresso.backend.memory import InMemoryBackend, Trait
-from grapresso.components.graph import UndirectedGraph
+from grapresso.components.graph import BiGraph
 
 
 class TestAlgorithmIntegration:
@@ -14,11 +14,11 @@ class TestAlgorithmIntegration:
         assert 222 == components
 
     def test_build_mst(self, create_graph, create_backend):
-        mst_graph = UndirectedGraph(create_backend())
+        mst_graph = BiGraph(create_backend())
         mst_result = create_graph("G_1_2.mmiw").build_mst(mst_graph)
         assert 286.711 == round(mst_result.costs, 3)
 
-    @pytest.fixture(params=[UndirectedGraph.perform_kruskal, UndirectedGraph.perform_prim])
+    @pytest.fixture(params=[BiGraph.perform_kruskal, BiGraph.perform_prim])
     def mst_alg(self, request):
         return request.param
 

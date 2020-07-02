@@ -15,23 +15,23 @@ sys.path.insert(1, LIB_DIR)
 
 from grapresso.tools.memory import getsize
 from grapresso.tools.performance import timeit
-from grapresso.backend.file import PickleFileBackend
 from grapresso.backend.memory import InMemoryBackend
-from grapresso.components.graph import UndirectedGraph, DirectedGraph
+from grapresso.backend.networkx import NetworkXBackend
+from grapresso.components.graph import BiGraph, DiGraph
 from grapresso_cli.importer.mmi_importer import MmiImporter
 
 BACKEND_DISPATCH = {'memory': InMemoryBackend,
-                    'file': PickleFileBackend}
+                    'file': NetworkXBackend}
 
-METHOD_DISPATCH = {'count-components': UndirectedGraph.count_connected_components,
-                   'kruskal': UndirectedGraph.perform_kruskal,
-                   'prim': UndirectedGraph.perform_prim,
-                   'nearest-neighbour': UndirectedGraph.perform_nearest_neighbour_tour,
-                   'enumerate': UndirectedGraph.enumerate,
-                   'enumerate-bb': UndirectedGraph.enumerate_bnb,
-                   'double-tree': UndirectedGraph.double_tree_tour,
-                   'dijkstra': UndirectedGraph.perform_dijkstra,
-                   'mbf': UndirectedGraph.perform_bellman_ford}
+METHOD_DISPATCH = {'count-components': BiGraph.count_connected_components,
+                   'kruskal': BiGraph.perform_kruskal,
+                   'prim': BiGraph.perform_prim,
+                   'nearest-neighbour': BiGraph.perform_nearest_neighbour_tour,
+                   'enumerate': BiGraph.enumerate,
+                   'enumerate-bb': BiGraph.enumerate_bnb,
+                   'double-tree': BiGraph.double_tree_tour,
+                   'dijkstra': BiGraph.perform_dijkstra,
+                   'mbf': BiGraph.perform_bellman_ford}
 
 parser = argparse.ArgumentParser(description='Process MMI graph.')
 parser.add_argument('files', metavar='file', type=str, nargs='+',
@@ -69,9 +69,9 @@ def run(arguments):
                     if os.path.exists(directory):
                         print("Info: Graph already exists in a serialized form (dir: {}).".format(directory))
                         if passed_values.symmetric:
-                            return UndirectedGraph(BACKEND_DISPATCH[backend](directory))
+                            return BiGraph(BACKEND_DISPATCH[backend](directory))
                         else:
-                            return DirectedGraph(BACKEND_DISPATCH[backend](directory))
+                            return DiGraph(BACKEND_DISPATCH[backend](directory))
                     else:
                         return importer.read_graph(BACKEND_DISPATCH[backend](directory), file_name,
                                                    not passed_values.symmetric)

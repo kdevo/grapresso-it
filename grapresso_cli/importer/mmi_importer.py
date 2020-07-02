@@ -2,7 +2,7 @@ import os
 from typing import NamedTuple
 
 from grapresso.backend.api import DataBackend
-from grapresso.components.graph import UndirectedGraph, DirectedGraph
+from grapresso.components.graph import BiGraph, DiGraph
 
 MetaInfo = NamedTuple('MetaInfo', [('matching_group_no', int),
                                    ('weighted', bool), ('capacity', bool), ('matching', bool), ('balanced', bool)])
@@ -23,7 +23,7 @@ class MmiImporter:
         balanced = file_path.endswith('bwc')
 
         last_import_group_no = 0
-        graph = DirectedGraph(backend) if is_directed else UndirectedGraph(backend)
+        graph = DiGraph(backend) if is_directed else BiGraph(backend)
         with open(file_path, 'rt', buffering=1, encoding='ascii') as file:
             node_count = int(file.readline().strip())
             if matching:
