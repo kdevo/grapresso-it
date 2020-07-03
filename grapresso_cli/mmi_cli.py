@@ -15,23 +15,25 @@ sys.path.insert(1, LIB_DIR)
 
 from grapresso.tools.memory import getsize
 from grapresso.tools.performance import timeit
-from grapresso.backend.memory import InMemoryBackend
+from grapresso.backend.memory import InMemoryBackend, Trait
 from grapresso.backend.networkx import NetworkXBackend
-from grapresso.components.graph import BiGraph, DiGraph
+from grapresso.components.graph import UnDiGraph, DiGraph
 from grapresso_cli.importer.mmi_importer import MmiImporter
 
-BACKEND_DISPATCH = {'memory': InMemoryBackend,
-                    'file': NetworkXBackend}
+BACKEND_DISPATCH = {'mem-optper': lambda: InMemoryBackend(Trait.OPTIMIZE_PERFORMANCE),
+                    'mem-optmem': lambda: InMemoryBackend(Trait.OPTIMIZE_PERFORMANCE),
+                    'mem': lambda: InMemoryBackend(),
+                    'nx ': NetworkXBackend()}
 
-METHOD_DISPATCH = {'count-components': BiGraph.count_connected_components,
-                   'kruskal': BiGraph.perform_kruskal,
-                   'prim': BiGraph.perform_prim,
-                   'nearest-neighbour': BiGraph.perform_nearest_neighbour_tour,
-                   'enumerate': BiGraph.enumerate,
-                   'enumerate-bb': BiGraph.enumerate_bnb,
-                   'double-tree': BiGraph.double_tree_tour,
-                   'dijkstra': BiGraph.perform_dijkstra,
-                   'mbf': BiGraph.perform_bellman_ford}
+METHOD_DISPATCH = {'count-components': UnDiGraph.count_connected_components,
+                   'kruskal': UnDiGraph.perform_kruskal,
+                   'prim': UnDiGraph.perform_prim,
+                   'nearest-neighbour': UnDiGraph.perform_nearest_neighbour_tour,
+                   'enumerate': UnDiGraph.enumerate,
+                   'enumerate-bb': UnDiGraph.enumerate_bnb,
+                   'double-tree': UnDiGraph.double_tree_tour,
+                   'dijkstra': UnDiGraph.perform_dijkstra,
+                   'mbf': UnDiGraph.perform_bellman_ford}
 
 parser = argparse.ArgumentParser(description='Process MMI graph.')
 parser.add_argument('files', metavar='file', type=str, nargs='+',
@@ -69,11 +71,11 @@ def run(arguments):
                     if os.path.exists(directory):
                         print("Info: Graph already exists in a serialized form (dir: {}).".format(directory))
                         if passed_values.symmetric:
-                            return BiGraph(BACKEND_DISPATCH[backend](directory))
+                            return UnDiGraph(BACKEND_DISPATCH[backend]())
                         else:
-                            return DiGraph(BACKEND_DISPATCH[backend](directory))
+                            return DiGraph(BACKEND_DISPATCH[backend]())
                     else:
-                        return importer.read_graph(BACKEND_DISPATCH[backend](directory), file_name,
+                        return importer.read_graph(BACKEND_DISPATCH[backend](), file_name,
                                                    not passed_values.symmetric)
                 else:
                     return importer.read_graph(BACKEND_DISPATCH[backend](), file_name, not passed_values.symmetric)

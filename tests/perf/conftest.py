@@ -1,9 +1,9 @@
 # The following has essentially been adapted from https://pypi.org/project/pytest-memprof/0.2.0
 
-# import csv
 import threading
 
 import psutil
+# import pandas
 import pytest
 import time
 
@@ -19,11 +19,11 @@ def pytest_addoption(parser):
     )
 
     # group.addoption(
-    #     '--memprof-csv-file',
+    #     '--profiling-csv-file',
     #     action='store',
-    #     dest='memprof_csv_file',
+    #     dest='csv_file',
     #     default=None,
-    #     help='output comma separated value table to given filename',
+    #     help='Output comma separated value table to given filename',
     # )
 
     parser.addini('memprof_top_n', 'limit memory reports to top n entries')
@@ -48,8 +48,8 @@ def pytest_runtest_call(item):
     def report_mem():
         peaks.append(available_mem())
         if running.is_set():
-            # run this function in 0.3 seconds again:
-            threading.Timer(0.3, report_mem).start()
+            # run this function in 0.1 seconds again:
+            threading.Timer(0.1, report_mem).start()
 
     report_mem()
 

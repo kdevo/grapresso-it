@@ -15,7 +15,6 @@ def create_backend(request, tmp_path):
             'InMemory-OptimizeMemory': InMemoryBackend(Trait.OPTIMIZE_MEMORY),
             'InMemory-OptimizePerformance': InMemoryBackend(Trait.OPTIMIZE_PERFORMANCE),
             'NetworkXBackend': NetworkXBackend(),
-            # 'PickleFile': PickleFileBackend(str(tmp_path))
         }[request.param]
 
     return _create_backend
