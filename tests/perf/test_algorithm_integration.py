@@ -71,11 +71,11 @@ class TestAlgorithmIntegration:
         target_node = 0
         graph = create_graph("paths1.mmiw", True)
         result = graph.perform_bellman_ford(start_node)
-        assert 6 == result.dist_table[graph.node_by_name(target_node)].dist
+        assert 6 == result.dist_table[graph.node(target_node)].dist
 
         graph = create_graph("paths2.mmiw", True)
         result = graph.perform_bellman_ford(start_node)
-        assert 2 == result.dist_table[graph.node_by_name(target_node)].dist
+        assert 2 == result.dist_table[graph.node(target_node)].dist
 
         graph = create_graph("paths3.mmiw", True)
         result = graph.perform_bellman_ford(start_node)
@@ -89,28 +89,28 @@ class TestAlgorithmIntegration:
         target_node = 1
         graph = create_graph("G_1_2.mmiw", True)
         result = graph.perform_bellman_ford(0)
-        assert 5.54417 == round(result.dist_table[graph.node_by_name(1)].dist, 5)
+        assert 5.54417 == round(result.dist_table[graph.node(1)].dist, 5)
 
         graph = create_graph("G_1_2.mmiw", False)
         result = graph.perform_bellman_ford(start_node)
-        assert 2.36796 == round(result.dist_table[graph.node_by_name(target_node)].dist, 5)
+        assert 2.36796 == round(result.dist_table[graph.node(target_node)].dist, 5)
 
     def test_dijkstra(self, create_graph):
         graph = create_graph("paths1.mmiw", True)
         table = graph.perform_dijkstra(2)
-        assert 6 == table[graph.node_by_name(0)].dist
+        assert 6 == table[graph.node(0)].dist
 
         graph = create_graph("paths2.mmiw", True)
         table = graph.perform_dijkstra(2)
-        assert 2 == table[graph.node_by_name(0)].dist
+        assert 2 == table[graph.node(0)].dist
 
         graph = create_graph("G_1_2.mmiw", True)
         table = graph.perform_dijkstra(0)
-        assert 5.54417 == round(table[graph.node_by_name(1)].dist, 5)
+        assert 5.54417 == round(table[graph.node(1)].dist, 5)
 
         graph = create_graph("G_1_2.mmiw")
         table = graph.perform_dijkstra(0)
-        assert 2.36796 == round(table[graph.node_by_name(1)].dist, 5)
+        assert 2.36796 == round(table[graph.node(1)].dist, 5)
 
     def test_edmonds_karp(self, create_graph):
         graph = create_graph("flow-small.mmic", True)
