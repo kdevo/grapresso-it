@@ -1,7 +1,7 @@
 import pytest
 
-from grapresso.backend.memory import InMemoryBackend, Trait
-from grapresso.backend.networkx import NetworkXBackend
+from grapresso.backends.memory import InMemoryBackend, Trait
+from grapresso.backends.networkx import NetworkXBackend
 from grapresso_cli.importer.mmi_importer import MmiImporter
 
 ALL_BACKENDS = ('InMemory-OptimizeMemory', 'InMemory-OptimizePerformance', 'NetworkXBackend')

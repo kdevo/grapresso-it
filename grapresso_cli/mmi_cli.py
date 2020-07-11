@@ -15,8 +15,8 @@ sys.path.insert(1, LIB_DIR)
 
 from grapresso.tools.memory import getsize
 from grapresso.tools.performance import timeit
-from grapresso.backend.memory import InMemoryBackend, Trait
-from grapresso.backend.networkx import NetworkXBackend
+from grapresso.backends.memory import InMemoryBackend, Trait
+from grapresso.backends.networkx import NetworkXBackend
 from grapresso.components.graph import UnDiGraph, DiGraph
 from grapresso_cli.importer.mmi_importer import MmiImporter
 

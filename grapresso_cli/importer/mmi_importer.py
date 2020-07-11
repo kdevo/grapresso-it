@@ -1,7 +1,7 @@
 import os
 from typing import NamedTuple
 
-from grapresso.backend.api import DataBackend
+from grapresso.backends.api import DataBackend
 from grapresso.components.graph import UnDiGraph, DiGraph
 
 MetaInfo = NamedTuple('MetaInfo', [('matching_group_no', int),
